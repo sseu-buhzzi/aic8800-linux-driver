@@ -5,17 +5,17 @@ obj-$(CONFIG_AIC_LOADFW_SUPPORT)    += aic_load_fw/
 obj-$(CONFIG_AIC8800_WLAN_SUPPORT) += aic8800_fdrv/
 
 ########## config option ##########
-export CONFIG_USE_FW_REQUEST = n
-export CONFIG_PREALLOC_RX_SKB = y
-export CONFIG_PREALLOC_TXQ = y
+export CONFIG_USE_FW_REQUEST ?= n
+export CONFIG_PREALLOC_RX_SKB ?= y
+export CONFIG_PREALLOC_TXQ ?= y
 ###################################
 
 ########## platform support list ##########
-export CONFIG_PLATFORM_ROCKCHIP = n
-export CONFIG_PLATFORM_ALLWINNER = n
-export CONFIG_PLATFORM_AMLOGIC = n
-export CONFIG_PLATFORM_HI = n
-export CONFIG_PLATFORM_UBUNTU = y
+export CONFIG_PLATFORM_ROCKCHIP ?= n
+export CONFIG_PLATFORM_ALLWINNER ?= n
+export CONFIG_PLATFORM_AMLOGIC ?= n
+export CONFIG_PLATFORM_HI ?= n
+export CONFIG_PLATFORM_UBUNTU ?= n
 
 ifeq ($(CONFIG_PLATFORM_ROCKCHIP), y)
 ARCH = arm64
@@ -55,6 +55,19 @@ ARCH ?= $(SUBARCH)
 CROSS_COMPILE ?=
 endif
 
+ifeq ($(CONFIG_PLATFORM_CUSTOM), y)
+ifeq ("$(wildcard $(KDIR))", "")
+$(error [AIC8800] Error: Kernel build directory (KDIR) "$(KIDR)" not found.)
+endif
+PWD ?= $(shell pwd)
+KVER ?= $(shell uname -r)
+MODDESTDIR ?= build
+SUBARCH ?= $(shell uname -m | sed -e s/i.86/i386/ -e s/armv.l/arm/ -e s/aarch64/arm64/ -e s/loongarch64/loongarch/ -e s/loong64/loongarch/)
+ARCH ?= $(SUBARCH)
+CROSS_COMPILE ?=
+endif
+
+
 ###########################################
 
 MAKEFLAGS +=-j$(shell nproc)
@@ -67,7 +80,7 @@ install:
 	mkdir -p $(MODDESTDIR)
 	install -p -m 644 aic_load_fw/aic_load_fw.ko  $(MODDESTDIR)/
 	install -p -m 644 aic8800_fdrv/aic8800_fdrv.ko  $(MODDESTDIR)/
-	/sbin/depmod -a ${KVER}
+	# /sbin/depmod -a ${KVER}
 
 uninstall:
 	rm -rfv $(MODDESTDIR)/aic_load_fw.ko
