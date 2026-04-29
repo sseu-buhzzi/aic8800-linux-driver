@@ -10,6 +10,7 @@
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
       kernel = pkgs.linuxPackages_6_12.kernel;
+      kdir = "${kernel.dev}/lib/modules/${kernel.modDirVersion}/build";
     in
     {
       defaultPackages.${system} = self.packages.${system}.aic8800-driver;
@@ -27,11 +28,7 @@
           buildPhase = ''
             cd 'drivers/aic8800'
 
-            args=(
-              CONFIG_PLATFORM_CUSTOM=y
-              KDIR='${kernel.dev}/lib/modules/${kernel.modDirVersion}/build'
-            )
-            make "''${args[@]}"
+            make CONFIG_PLATFORM_CUSTOM=y KDIR='${kdir}'
           '';
 
           installPhase = ''
@@ -45,6 +42,22 @@
             make "''${args[@]}"
           '';
         };
+      };
+
+      devShells.${system}.default = pkgs.mkShell {
+        inputsFrom = [ self.packages.${system}.aic8800-driver ];
+
+        nativeBuildInputs = with pkgs; [
+          bear
+        ];
+
+        shellHook = ''
+          echo 'It is a dev environment for UGREEN AIC8800 Linux driver'
+          echo 'Kernel version: ${kernel.modDirVersion}'
+
+          export KDIR='${kdir}'
+          export ARCH='x86_64'
+        '';
       };
     };
 }
