@@ -16,6 +16,7 @@ export CONFIG_PLATFORM_ALLWINNER ?= n
 export CONFIG_PLATFORM_AMLOGIC ?= n
 export CONFIG_PLATFORM_HI ?= n
 export CONFIG_PLATFORM_UBUNTU ?= n
+export CONFIG_PLATFORM_CUSTOM ?= n
 
 ifeq ($(CONFIG_PLATFORM_ROCKCHIP), y)
 ARCH = arm64
@@ -57,7 +58,7 @@ endif
 
 ifeq ($(CONFIG_PLATFORM_CUSTOM), y)
 ifeq ("$(wildcard $(KDIR))", "")
-$(error [AIC8800] Error: Kernel build directory (KDIR) "$(KIDR)" not found.)
+$(error [AIC8800] Error: Kernel build directory (KDIR) "$(KDIR)" not found.)
 endif
 PWD ?= $(shell pwd)
 KVER ?= $(shell uname -r)
@@ -80,10 +81,12 @@ install:
 	mkdir -p $(MODDESTDIR)
 	install -p -m 644 aic_load_fw/aic_load_fw.ko  $(MODDESTDIR)/
 	install -p -m 644 aic8800_fdrv/aic8800_fdrv.ko  $(MODDESTDIR)/
+	/sbin/depmod -a ${KVER}
 
 uninstall:
 	rm -rfv $(MODDESTDIR)/aic_load_fw.ko
 	rm -rfv $(MODDESTDIR)/aic8800_fdrv.ko
+	/sbin/depmod -a ${KVER}
 
 clean:
 	cd aic_load_fw/;make clean;cd ..

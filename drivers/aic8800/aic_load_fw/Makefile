@@ -106,6 +106,13 @@ ARCH ?= $(SUBARCH)
 CROSS_COMPILE :=
 endif
 
+ifeq ($(CONFIG_PLATFORM_CUSTOM), y)
+ifeq ($(strip $(AIC_DEFAULT_FW_PATH)),)
+$(error [AIC8800] Error: AIC_DEFAULT_FW_PATH is missing.)
+endif
+ccflags-$(CONFIG_PLATFORM_CUSTOM) += -DAIC_DEFAULT_FW_PATH='$(AIC_DEFAULT_FW_PATH)'
+endif
+
 
 all: modules
 modules:

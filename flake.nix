@@ -9,55 +9,39 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
-      kernel = pkgs.linuxPackages_6_18.kernel;
-      kdir = "${kernel.dev}/lib/modules/${kernel.modDirVersion}/build";
     in
     {
-      defaultPackages.${system} = self.packages.${system}.aic8800-driver;
+      nixosModules.aic8800 = import ./nixosModules/aic8800/default.nix;
+
+      defaultPackages.${system} =
+        self.packages.${system}.aic8800-driver;
 
       packages.${system} = {
         default = self.packages.${system}.aic8800-driver;
 
-        aic8800-driver = pkgs.stdenv.mkDerivation {
-          pname = "aic8800-driver";
-          version = "1.1.0";
-          src = ./.;
+        aic8800-driver = pkgs.linuxPackages.callPackage
+          ./nixosModules/aic8800/driver.nix
+          { };
+      };
 
-          nativeBuildInputs = [ kernel ];
+      devShells.${system}.default =
+        let
+          kernel = pkgs.linuxPackages.kernel;
+        in
+        pkgs.mkShell {
+          inputsFrom = [ self.packages.${system}.aic8800-driver ];
 
-          buildPhase = ''
-            cd 'drivers/aic8800'
+          nativeBuildInputs = with pkgs; [
+            bear
+          ];
 
-            make CONFIG_PLATFORM_CUSTOM=y KDIR='${kdir}'
-          '';
+          shellHook = ''
+            echo 'It is a dev environment for UGREEN AIC8800 Linux driver'
+            echo 'Kernel version: ${kernel.modDirVersion}'
 
-          installPhase = ''
-            mod_dest_dir="$out/lib/modules/${kernel.modDirVersion}/kernel/drivers/net/wireless/aic8800"
-            mkdir -p "$mod_dest_dir"
-
-            args=(
-              MODDESTDIR="$mod_dest_dir"
-              install
-            )
-            make "''${args[@]}"
+            export KDIR='${kernel.dev}/lib/modules/${kernel.modDirVersion}/build'
+            export ARCH='x86_64'
           '';
         };
-      };
-
-      devShells.${system}.default = pkgs.mkShell {
-        inputsFrom = [ self.packages.${system}.aic8800-driver ];
-
-        nativeBuildInputs = with pkgs; [
-          bear
-        ];
-
-        shellHook = ''
-          echo 'It is a dev environment for UGREEN AIC8800 Linux driver'
-          echo 'Kernel version: ${kernel.modDirVersion}'
-
-          export KDIR='${kdir}'
-          export ARCH='x86_64'
-        '';
-      };
     };
 }
