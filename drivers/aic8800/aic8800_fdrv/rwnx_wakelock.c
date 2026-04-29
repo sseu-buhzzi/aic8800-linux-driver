@@ -18,8 +18,7 @@ struct wakeup_source *rwnx_wakeup_init(const char *name)
 
 void rwnx_wakeup_deinit(struct wakeup_source *ws)
 {
-	if (ws && ws->active)
-		__pm_relax(ws);
+	__pm_relax(ws);
 	wakeup_source_unregister(ws);
 }
 
