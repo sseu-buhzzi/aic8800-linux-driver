@@ -9,7 +9,7 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
-      kernel = pkgs.linuxPackages_6_12.kernel;
+      kernel = pkgs.linuxPackages_6_18.kernel;
       kdir = "${kernel.dev}/lib/modules/${kernel.modDirVersion}/build";
     in
     {
