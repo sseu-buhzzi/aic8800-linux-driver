@@ -5,28 +5,29 @@
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
   };
 
-  outputs = { self, nixpkgs }:
+  outputs =
+    { self, nixpkgs }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
+      linuxPkgs = pkgs.linuxPackages_7_0;
     in
     {
       nixosModules.aic8800 = import ./nixosModules/aic8800/default.nix;
 
-      defaultPackages.${system} =
-        self.packages.${system}.aic8800-driver;
+      defaultPackages.${system} = self.packages.${system}.aic8800-driver;
 
       packages.${system} = {
         default = self.packages.${system}.aic8800-driver;
 
-        aic8800-driver = pkgs.linuxPackages.callPackage
-          ./nixosModules/aic8800/driver.nix
-          { };
+        aic8800-driver =
+          linuxPkgs.callPackage ./nixosModules/aic8800/driver.nix
+            { };
       };
 
       devShells.${system}.default =
         let
-          kernel = pkgs.linuxPackages.kernel;
+          inherit (linuxPkgs) kernel;
         in
         pkgs.mkShell {
           inputsFrom = [ self.packages.${system}.aic8800-driver ];
