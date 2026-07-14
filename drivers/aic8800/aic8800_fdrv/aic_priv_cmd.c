@@ -12,6 +12,7 @@
 
 #include <linux/netdevice.h>
 #include <linux/ctype.h>
+#include <linux/compiler_attributes.h>
 #include "rwnx_defs.h"
 #include "rwnx_msg_tx.h"
 #include "rwnx_debugfs.h"
@@ -264,7 +265,7 @@ static unsigned int command_strtoul(const char *cp, char **endp,
 	return result;
 }
 
-static int str_starts(const char *str, const char *start)
+static __maybe_unused int str_starts(const char *str, const char *start)
 {
 	return strncmp(str, start, strlen(start)) == 0;
 }
@@ -1724,11 +1725,12 @@ int rwnx_cfg80211_set_monitor_channel_(struct wiphy *wiphy,
                                              struct cfg80211_chan_def *chandef);
 #endif
 int rwnx_atoi2(char *value, int c_len);
+static __maybe_unused
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 13, 0))
-static void set_mon_chan(struct rwnx_vif *vif, struct net_device *dev,
+void set_mon_chan(struct rwnx_vif *vif, struct net_device *dev,
                          char *parameter)
 #else
-static void set_mon_chan(struct rwnx_vif *vif, char *parameter)
+void set_mon_chan(struct rwnx_vif *vif, char *parameter)
 #endif
 {
     struct cfg80211_chan_def *chandef = NULL;

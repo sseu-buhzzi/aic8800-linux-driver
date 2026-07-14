@@ -2717,7 +2717,8 @@ static void rwnx_cfgp2p_stop_p2p_device(struct wiphy *wiphy, struct wireless_dev
     return;
 }
 
-static int rwnx_send_check_p2p(struct cfg80211_scan_request *param)
+static __maybe_unused
+int rwnx_send_check_p2p(struct cfg80211_scan_request *param)
 {
 	int index = (u8)min_t(int, SCAN_SSID_MAX, param->n_ssids);
 	int i = 0;
@@ -4281,13 +4282,14 @@ static int rwnx_cfg80211_probe_client(struct wiphy *wiphy,
  *	registered. Note that this callback may not sleep, and cannot run
  *	concurrently with itself.
  */
-static void rwnx_cfg80211_mgmt_frame_register(struct wiphy *wiphy,
+static __maybe_unused
+void rwnx_cfg80211_mgmt_frame_register(struct wiphy *wiphy,
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(3, 6, 0))
-                                              struct net_device *dev,
+                                       struct net_device *dev,
 #else
-                                              struct wireless_dev *wdev,
+                                       struct wireless_dev *wdev,
 #endif
-                                              u16 frame_type, bool reg)
+                                       u16 frame_type, bool reg)
 {
 }
 
@@ -8537,7 +8539,7 @@ static int rwnx_ic_rf_init(struct rwnx_hw *rwnx_hw)
 #endif
 	return 0;
 }
-static void aic_ipc_setting(struct rwnx_vif *rwnx_vif)
+static __maybe_unused void aic_ipc_setting(struct rwnx_vif *rwnx_vif)
 {
     struct rwnx_hw *rwnx_hw = rwnx_vif->rwnx_hw;
 	uint32_t hw_edca = 1;

@@ -1,7 +1,9 @@
-#include"aicwf_tcp_ack.h"
-//#include"rwnx_tx.h"
+#include <linux/compiler_attributes.h>
+
+#include "aicwf_tcp_ack.h"
+//#include "rwnx_tx.h"
 //#include "aicwf_tcp_ack.h"
-#include"rwnx_defs.h"
+#include "rwnx_defs.h"
 extern int intf_tx(struct rwnx_hw *priv,struct msg_buf *msg);
 struct msg_buf *intf_tcp_alloc_msg(struct msg_buf *msg)
 {
@@ -347,10 +349,11 @@ static int tcp_ack_alloc_index(struct tcp_ack_manage *ack_m)
 
 
 /* return val: 0 for not handle tx, 1 for handle tx */
-static int tcp_ack_handle(struct msg_buf *new_msgbuf,
-                          struct tcp_ack_manage *ack_m,
-                          struct tcp_ack_info *ack_info,
-                          struct tcp_ack_msg *ack_msg, int type)
+static __maybe_unused
+int tcp_ack_handle(struct msg_buf *new_msgbuf,
+                   struct tcp_ack_manage *ack_m,
+                   struct tcp_ack_info *ack_info,
+                   struct tcp_ack_msg *ack_msg, int type)
 {
 	int quick_ack = 0;
 	struct tcp_ack_msg *ack;
