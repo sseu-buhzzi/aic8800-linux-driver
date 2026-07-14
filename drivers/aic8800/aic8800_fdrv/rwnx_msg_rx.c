@@ -790,35 +790,35 @@ static inline int rwnx_rx_scanu_result_ind(struct rwnx_hw *rwnx_hw,
 #endif
 
 #ifdef CONFIG_USE_WIRELESS_EXT
-		if (!bss || !bss->bssid) {
-			AICWFDBG(LOGERROR, "%s: Invalid BSS structure\n", __func__);
-			goto putbss;
-		}
-		list_for_each_entry(scan_re_wext, &rwnx_hw->wext_scanre_list, scanu_re_list) {
-			if (!scan_re_wext || !scan_re_wext->bss || !scan_re_wext->bss->bssid) {
-				AICWFDBG(LOGDEBUG, "%s: Corrupted list entry detected\n", __func__);
-				continue;
-			}
-			if (!memcmp(scan_re_wext->bss->bssid, bss->bssid, ETH_ALEN)) {
-				AICWFDBG(LOGDEBUG, "%s: BSSID already exists, no need to add again\r\n", __func__);
-				goto putbss;
-			}
-		}
-			scan_re_wext = (struct scanu_result_wext *)vmalloc(sizeof(struct scanu_result_wext));
-			scan_re_wext->ind = (struct scanu_result_ind *)vmalloc(sizeof(struct scanu_result_ind));
-			scan_re_wext->payload = (u32_l *)vmalloc(sizeof(u32_l) * ind->length);
+        if (bss == NULL) {
+            AICWFDBG(LOGERROR, "%s: Invalid BSS structure\n", __func__);
+            goto putbss;
+        }
+        list_for_each_entry(scan_re_wext, &rwnx_hw->wext_scanre_list, scanu_re_list) {
+            if (scan_re_wext != NULL || scan_re_wext->bss != NULL) {
+                AICWFDBG(LOGDEBUG, "%s: Corrupted list entry detected\n", __func__);
+                continue;
+            }
+            if (!memcmp(scan_re_wext->bss->bssid, bss->bssid, ETH_ALEN)) {
+                AICWFDBG(LOGDEBUG, "%s: BSSID already exists, no need to add again\r\n", __func__);
+                goto putbss;
+            }
+        }
+        scan_re_wext = (struct scanu_result_wext *)vmalloc(sizeof(struct scanu_result_wext));
+        scan_re_wext->ind = (struct scanu_result_ind *)vmalloc(sizeof(struct scanu_result_ind));
+        scan_re_wext->payload = (u32_l *)vmalloc(sizeof(u32_l) * ind->length);
 
-			memset(scan_re_wext->ind, 0, sizeof(struct scanu_result_ind));
-			memset(scan_re_wext->payload, 0, ind->length);
-			
-			memcpy(scan_re_wext->ind, ind, sizeof(struct scanu_result_ind));
-			memcpy(scan_re_wext->payload, ind->payload, ind->length);
-	
-			scan_re_wext->bss = bss;
+        memset(scan_re_wext->ind, 0, sizeof(struct scanu_result_ind));
+        memset(scan_re_wext->payload, 0, ind->length);
 
-			INIT_LIST_HEAD(&scan_re_wext->scanu_re_list);
-			list_add_tail(&scan_re_wext->scanu_re_list, &rwnx_hw->wext_scanre_list);
-			return 0;
+        memcpy(scan_re_wext->ind, ind, sizeof(struct scanu_result_ind));
+        memcpy(scan_re_wext->payload, ind->payload, ind->length);
+
+        scan_re_wext->bss = bss;
+
+        INIT_LIST_HEAD(&scan_re_wext->scanu_re_list);
+        list_add_tail(&scan_re_wext->scanu_re_list, &rwnx_hw->wext_scanre_list);
+        return 0;
 #endif
 
     }
