@@ -11,6 +11,7 @@
  */
 
 #include <linux/vmalloc.h>
+#include "rwnx_msg_rx.h"
 #include "rwnx_defs.h"
 #include "rwnx_prof.h"
 #include "rwnx_tx.h"

@@ -258,7 +258,7 @@ const u32 crc_tab[256] =
     0xb3667a2e, 0xc4614ab8, 0x5d681b02, 0x2a6f2b94,
     0xb40bbe37, 0xc30c8ea1, 0x5a05df1b, 0x2d02ef8d,
 };
-u32 aic_crc32(u8 *p, u32 len, u32 crc)
+static u32 aic_crc32(u8 *p, u32 len, u32 crc)
 {
     while(len--)
     {
@@ -899,7 +899,9 @@ int8_t rwnx_atoi(char *value){
 	return result;
 }
 
-void get_fw_path(char* fw_path){
+void get_fw_path(char *fw_path);
+void get_fw_path(char *fw_path)
+{
 	if (strlen(aic_fw_path) > 0) {
 		memcpy(fw_path, aic_fw_path, strlen(aic_fw_path));
 	}else{
@@ -907,28 +909,38 @@ void get_fw_path(char* fw_path){
 	}
 } 
 
-void set_testmode(int val){
+void set_testmode(int val);
+void set_testmode(int val)
+{
 	testmode = val;
 }
 
-int get_testmode(void){
+int get_testmode(void);
+int get_testmode(void)
+{
 	return testmode;
 }
 
-int get_hardware_info(void){
+int get_hardware_info(void);
+int get_hardware_info(void)
+{
 	return AIC_HW_INFO;
 }
 
 extern int adap_test;
-int get_adap_test(void){
+int get_adap_test(void);
+int get_adap_test(void)
+{
     return adap_test;
 }
 
+int get_flash_bin_size(void);
 int get_flash_bin_size(void)
 {
     return flash_write_size;
 }
 
+u32 get_flash_bin_crc(void);
 u32 get_flash_bin_crc(void)
 {
     return flash_write_bin_crc;
@@ -948,6 +960,7 @@ EXPORT_SYMBOL(get_flash_bin_size);
 EXPORT_SYMBOL(get_flash_bin_crc);
 
 
+void get_userconfig_xtal_cap(xtal_cap_conf_t *xtal_cap);
 void get_userconfig_xtal_cap(xtal_cap_conf_t *xtal_cap)
 {
 	xtal_cap->enable = userconfig_xtal_cap.enable;
@@ -961,7 +974,9 @@ void get_userconfig_xtal_cap(xtal_cap_conf_t *xtal_cap)
 
 EXPORT_SYMBOL(get_userconfig_xtal_cap);
 
-void get_userconfig_txpwr_idx(txpwr_idx_conf_t *txpwr_idx){
+void get_userconfig_txpwr_idx(txpwr_idx_conf_t *txpwr_idx);
+void get_userconfig_txpwr_idx(txpwr_idx_conf_t *txpwr_idx)
+{
 	txpwr_idx->enable = userconfig_txpwr_idx.enable;
 	txpwr_idx->dsss = userconfig_txpwr_idx.dsss;
 	txpwr_idx->ofdmlowrate_2g4 = userconfig_txpwr_idx.ofdmlowrate_2g4;
@@ -988,7 +1003,9 @@ void get_userconfig_txpwr_idx(txpwr_idx_conf_t *txpwr_idx){
 
 EXPORT_SYMBOL(get_userconfig_txpwr_idx);
 
-void get_userconfig_txpwr_ofst(txpwr_ofst_conf_t *txpwr_ofst){
+void get_userconfig_txpwr_ofst(txpwr_ofst_conf_t *txpwr_ofst);
+void get_userconfig_txpwr_ofst(txpwr_ofst_conf_t *txpwr_ofst)
+{
 	txpwr_ofst->enable = userconfig_txpwr_ofst.enable;
 	txpwr_ofst->chan_1_4 = userconfig_txpwr_ofst.chan_1_4;
 	txpwr_ofst->chan_5_9 = userconfig_txpwr_ofst.chan_5_9;
@@ -1011,7 +1028,8 @@ void get_userconfig_txpwr_ofst(txpwr_ofst_conf_t *txpwr_ofst){
 
 EXPORT_SYMBOL(get_userconfig_txpwr_ofst);
 
-void rwnx_plat_userconfig_set_value(char *command, char *value){	
+static void rwnx_plat_userconfig_set_value(char *command, char *value)
+{
 	//TODO send command
 	printk("%s:command=%s value=%s \r\n", __func__, command, value);
 	if(!strcmp(command, "enable")){
@@ -1059,7 +1077,8 @@ void rwnx_plat_userconfig_set_value(char *command, char *value){
 	}
 }
 
-void rwnx_plat_userconfig_parsing(char *buffer, int size){
+static void rwnx_plat_userconfig_parsing(char *buffer, int size)
+{
     int i = 0;
 	int parse_state = 0;
 	char command[30];

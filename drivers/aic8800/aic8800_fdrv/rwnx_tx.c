@@ -1241,7 +1241,8 @@ int aic_br_client_tx(struct rwnx_vif *vif, struct sk_buff **pskb)
  *      others, skb need free by the caller,remember not use msg->skb!
  */
 
-int intf_tx(struct rwnx_hw *priv,struct msg_buf *msg)
+int intf_tx(struct rwnx_hw *priv, struct msg_buf *msg);
+int intf_tx(struct rwnx_hw *priv, struct msg_buf *msg)
 {
 	struct rwnx_vif *rwnx_vif = msg->rwnx_vif;
 	struct rwnx_hw *rwnx_hw = rwnx_vif->rwnx_hw;

@@ -171,7 +171,8 @@ static inline void limit_chan_bw(u8_l *bw, u16_l primary, u16_l *center1)
     *center1 = primary + new_oft;
 }
 
-struct rwnx_cmd *rwnx_cmd_malloc(void){
+struct rwnx_cmd *rwnx_cmd_malloc(void)
+{
 	struct rwnx_cmd *cmd = NULL;
 	unsigned long flags = 0;
 
@@ -200,7 +201,8 @@ struct rwnx_cmd *rwnx_cmd_malloc(void){
 	return cmd;
 }
 
-void rwnx_cmd_free(struct rwnx_cmd *cmd){
+void rwnx_cmd_free(struct rwnx_cmd *cmd)
+{
 	unsigned long flags = 0;
 
 	spin_lock_irqsave(&cmd_array_lock, flags);
@@ -210,7 +212,8 @@ void rwnx_cmd_free(struct rwnx_cmd *cmd){
 }
 
 
-int rwnx_init_cmd_array(void){
+int rwnx_init_cmd_array(void)
+{
 
 	AICWFDBG(LOGTRACE, "%s Enter \r\n", __func__);
 	spin_lock_init(&cmd_array_lock);
@@ -225,7 +228,8 @@ int rwnx_init_cmd_array(void){
 	return 0;
 }
 
-void rwnx_free_cmd_array(void){
+void rwnx_free_cmd_array(void)
+{
 
 	AICWFDBG(LOGTRACE, "%s Enter \r\n", __func__);
 

@@ -13,9 +13,8 @@ struct msg_buf *intf_tcp_alloc_msg(struct msg_buf *msg)
 	memset(msg,0,len);
 	return msg;
 }
-						
-void intf_tcp_drop_msg(struct rwnx_hw *priv,
-					    struct msg_buf *msg)
+
+static void intf_tcp_drop_msg(struct rwnx_hw *priv, struct msg_buf *msg)
 {
 	//printk("%s \n",__func__);
 	if (msg->skb)
@@ -25,9 +24,9 @@ void intf_tcp_drop_msg(struct rwnx_hw *priv,
 }
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(4, 14, 0) 
-void tcp_ack_timeout(unsigned long data)
+static void tcp_ack_timeout(unsigned long data)
 #else
-void tcp_ack_timeout(struct timer_list *t)
+static void tcp_ack_timeout(struct timer_list *t)
 #endif
 {
 	//printk("%s \n",__func__);
@@ -120,8 +119,8 @@ void tcp_ack_deinit(struct rwnx_hw *priv)
 	}
 }
 
-int tcp_check_quick_ack(unsigned char *buf,
-				      struct tcp_ack_msg *msg)
+static int tcp_check_quick_ack(unsigned char *buf,
+                               struct tcp_ack_msg *msg)
 {
 	int ip_hdr_len;
 	unsigned char *temp;
@@ -213,9 +212,8 @@ int is_drop_tcp_ack(struct tcphdr *tcphdr, int tcp_tot_len,
  *	2 for other ack whith more info
  */
 
-int tcp_check_ack(unsigned char *buf,
-				struct tcp_ack_msg *msg,
-				unsigned short *win_scale)
+static int tcp_check_ack(unsigned char *buf, struct tcp_ack_msg *msg,
+                         unsigned short *win_scale)
 {
 	int ret;
 	int ip_hdr_len;
@@ -257,8 +255,8 @@ int tcp_check_ack(unsigned char *buf,
 }
 
 /* return val: -1 for not match, others for match */
-int tcp_ack_match(struct tcp_ack_manage *ack_m,
-				struct tcp_ack_msg *ack_msg)
+static int tcp_ack_match(struct tcp_ack_manage *ack_m,
+                         struct tcp_ack_msg *ack_msg)
 {
 	int i, ret = -1;
 	unsigned start;
@@ -285,7 +283,7 @@ int tcp_ack_match(struct tcp_ack_manage *ack_m,
 }
 
 
-void tcp_ack_update(struct tcp_ack_manage *ack_m)
+static void tcp_ack_update(struct tcp_ack_manage *ack_m)
 {
 	int i;
 	struct tcp_ack_info *ack_info;
@@ -310,7 +308,7 @@ void tcp_ack_update(struct tcp_ack_manage *ack_m)
 }
 
 /* return val: -1 for no index, others for index */
-int tcp_ack_alloc_index(struct tcp_ack_manage *ack_m)
+static int tcp_ack_alloc_index(struct tcp_ack_manage *ack_m)
 {
 	int i, ret = -1;
 	struct tcp_ack_info *ack_info;
@@ -349,11 +347,10 @@ int tcp_ack_alloc_index(struct tcp_ack_manage *ack_m)
 
 
 /* return val: 0 for not handle tx, 1 for handle tx */
-int tcp_ack_handle(struct msg_buf *new_msgbuf,
-			  struct tcp_ack_manage *ack_m,
-			  struct tcp_ack_info *ack_info,
-			  struct tcp_ack_msg *ack_msg,
-			  int type)
+static int tcp_ack_handle(struct msg_buf *new_msgbuf,
+                          struct tcp_ack_manage *ack_m,
+                          struct tcp_ack_info *ack_info,
+                          struct tcp_ack_msg *ack_msg, int type)
 {
 	int quick_ack = 0;
 	struct tcp_ack_msg *ack;
@@ -444,11 +441,10 @@ int tcp_ack_handle(struct msg_buf *new_msgbuf,
 	return ret;
 }
 
-int tcp_ack_handle_new(struct msg_buf *new_msgbuf,
-			  struct tcp_ack_manage *ack_m,
-			  struct tcp_ack_info *ack_info,
-			  struct tcp_ack_msg *ack_msg,
-			  int type)
+static int tcp_ack_handle_new(struct msg_buf *new_msgbuf,
+                              struct tcp_ack_manage *ack_m,
+                              struct tcp_ack_info *ack_info,
+                              struct tcp_ack_msg *ack_msg, int type)
 {
 	int quick_ack = 0;
 	struct tcp_ack_msg *ack;

@@ -20,6 +20,7 @@ extern void get_fw_path(char* fw_path);
 extern int testmode;
 extern char aic_fw_path[200];
 
+int rwnx_init_aic(struct rwnx_hw *rwnx_hw);
 int rwnx_init_aic(struct rwnx_hw *rwnx_hw)
 {
     RWNX_DBG(RWNX_FN_ENTRY_STR);

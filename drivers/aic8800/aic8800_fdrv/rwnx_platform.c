@@ -759,7 +759,10 @@ static void rwnx_restore_firmware(u32 **fw_buf)
 
 
 /* buffer is allocated by kzalloc */
-int rwnx_request_firmware_common(struct rwnx_hw *rwnx_hw, u32** buffer, const char *filename)
+int rwnx_request_firmware_common(struct rwnx_hw *rwnx_hw, u32 **buffer,
+                                 const char *filename);
+int rwnx_request_firmware_common(struct rwnx_hw *rwnx_hw, u32 **buffer,
+                                 const char *filename)
 {
     int size;
 
@@ -770,7 +773,8 @@ int rwnx_request_firmware_common(struct rwnx_hw *rwnx_hw, u32** buffer, const ch
     return size;
 }
 
-void rwnx_release_firmware_common(u32** buffer)
+void rwnx_release_firmware_common(u32 **buffer);
+void rwnx_release_firmware_common(u32 **buffer)
 {
     rwnx_restore_firmware(buffer);
 }
@@ -788,7 +792,9 @@ void rwnx_release_firmware_common(u32** buffer)
  */
 
 int rwnx_plat_bin_fw_upload_2(struct rwnx_hw *rwnx_hw, u32 fw_addr,
-                               char *filename)
+                              char *filename);
+int rwnx_plat_bin_fw_upload_2(struct rwnx_hw *rwnx_hw, u32 fw_addr,
+                              char *filename)
 {
     int err = 0;
     unsigned int i = 0, size;
@@ -1956,6 +1962,7 @@ static int rwnx_check_fw_compatibility(struct rwnx_hw *rwnx_hw)
 #endif
 #endif /* !CONFIG_RWNX_FHOST */
 
+int rwnx_atoi2(char *value, int c_len);
 int rwnx_atoi2(char *value, int c_len)
 {
     int len = 0;
@@ -1983,6 +1990,7 @@ int rwnx_atoi2(char *value, int c_len)
 }
 
 
+int rwnx_atoi(char *value);
 int rwnx_atoi(char *value)
 {
     int len = 0;
@@ -2331,6 +2339,7 @@ void set_txpwr_loss_ofst(s8_l value)
     AICWFDBG(LOGINFO, "%s:value:%d\r\n",      __func__, value);
 }
 
+void get_userconfig_xtal_cap(xtal_cap_conf_t *xtal_cap);
 void get_userconfig_xtal_cap(xtal_cap_conf_t *xtal_cap)
 {
     *xtal_cap = userconfig_info.xtal_cap;
@@ -2340,7 +2349,7 @@ void get_userconfig_xtal_cap(xtal_cap_conf_t *xtal_cap)
     AICWFDBG(LOGINFO, "%s:xtal_cap_fine:%d\r\n", __func__, xtal_cap->xtal_cap_fine);
 }
 
-void rwnx_plat_nvram_set_value(char *command, char *value)
+static void rwnx_plat_nvram_set_value(char *command, char *value)
 {
     //TODO send command
     AICWFDBG(LOGINFO, "%s:command=%s value=%s\n", __func__, command, value);
@@ -2646,7 +2655,8 @@ void rwnx_plat_nvram_set_value(char *command, char *value)
     }
 
 }
-void rwnx_plat_nvram_set_value_8800d80x2(char *command, char *value)
+static void rwnx_plat_nvram_set_value_8800d80x2(char *command,
+                                                char *value)
 {
     //TODO send command
     AICWFDBG(LOGINFO, "%s:command=%s value=%s\n", __func__, command, value);
@@ -2869,6 +2879,7 @@ void rwnx_plat_nvram_set_value_8800d80x2(char *command, char *value)
     }
 }
 
+void rwnx_plat_userconfig_parsing_8800d80x2(char *buffer, int size);
 void rwnx_plat_userconfig_parsing_8800d80x2(char *buffer, int size)
 {
     int i = 0;
