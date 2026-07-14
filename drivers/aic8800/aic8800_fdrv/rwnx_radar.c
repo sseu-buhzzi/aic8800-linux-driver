@@ -1410,24 +1410,24 @@ static void rwnx_radar_process_pulse(struct work_struct *ws)
 
 			if(rm->cnt == 1)
 			{
-				struct radar_detector_specs *spc;
+                const struct radar_detector_specs *spc;
 				int k;
 				AICWFDBG(LOGINFO, "dpd: en = %d, region = %d, ntype = %d", dpd->enabled, dpd->region, dpd->num_radar_types);
 				AICWFDBG(LOGINFO, "id  wid.{min, max}  pri.{min, max, num}, ppb, thd, tlrn, type");
 				for (k = 0; k < dpd->num_radar_types; k++)
 				{
-				spc = &dpd->radar_spec[k];
-				AICWFDBG(LOGINFO, "%d       %3d, %3d        %4d  %4d  %d    %2d   %2d    %d     %d", 
-				spc->type_id,
-				spc->width_min,
-				spc->width_max,
-				spc->pri_min,
-				spc->pri_max,
-				spc->num_pri,
-				spc->ppb,
-				spc->ppb_thresh,
-				spc->max_pri_tolerance,
-				spc->type);
+                    spc = &dpd->radar_spec[k];
+                    AICWFDBG(LOGINFO, "%d       %3d, %3d        %4d  %4d  %d    %2d   %2d    %d     %d", 
+                             spc->type_id,
+                             spc->width_min,
+                             spc->width_max,
+                             spc->pri_min,
+                             spc->pri_max,
+                             spc->num_pri,
+                             spc->ppb,
+                             spc->ppb_thresh,
+                             spc->max_pri_tolerance,
+                             spc->type);
 				}
 			}
         }
