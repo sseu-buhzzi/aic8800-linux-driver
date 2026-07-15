@@ -1,5 +1,7 @@
 #include <linux/types.h>
 
+#include "rwnx_defs.h"
+
 int rwnx_plat_userconfig_load_8800d80x2(struct rwnx_hw *rwnx_hw);
 #ifdef CONFIG_POWER_LIMIT
 int rwnx_plat_powerlimit_load_8800d80x2(struct rwnx_hw *rwnx_hw);

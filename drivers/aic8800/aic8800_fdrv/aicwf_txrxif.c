@@ -191,8 +191,6 @@ fail:
     return ret;
 }
 
-void aicwf_usb_cancel_all_urbs(struct aic_usb_dev *usb_dev);
-
 void aicwf_bus_deinit(struct device *dev)
 {
     struct aicwf_bus *bus_if;
@@ -1297,7 +1295,8 @@ void rxbuff_free(struct rx_buff *rxbuff)
    kfree(rxbuff);
 }
 
-struct rx_buff *rxbuff_queue_penq(struct rx_frame_queue *pq, struct rx_buff *p)
+static struct rx_buff *rxbuff_queue_penq(struct rx_frame_queue *pq,
+                                         struct rx_buff *p)
 {
 
     struct list_head *q;

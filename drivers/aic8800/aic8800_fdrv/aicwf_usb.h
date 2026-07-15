@@ -193,6 +193,7 @@ int usb_msg_busrx_thread(void *data);
 #endif
 int usb_bustx_thread(void *data);
 int usb_busrx_thread(void *data);
+void aicwf_usb_cancel_all_urbs(struct aic_usb_dev *usb_dev);
 
 
 extern void aicwf_hostif_ready(void);

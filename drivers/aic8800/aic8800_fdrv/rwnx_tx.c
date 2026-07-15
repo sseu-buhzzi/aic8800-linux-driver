@@ -9,6 +9,7 @@
  */
 #include <linux/dma-mapping.h>
 #include <linux/etherdevice.h>
+#include <linux/compiler_attributes.h>
 #include <net/sock.h>
 
 #include "rwnx_defs.h"
@@ -329,6 +330,7 @@ u16 rwnx_select_txq(struct rwnx_vif *rwnx_vif, struct sk_buff *skb)
         /* AP_VLAN interface is not used for a 4A STA,
            fallback searching sta amongs all AP's clients */
         rwnx_vif = rwnx_vif->ap_vlan.master;
+        fallthrough;
     case NL80211_IFTYPE_AP:
     case NL80211_IFTYPE_P2P_GO:
     {
@@ -1241,7 +1243,8 @@ int aic_br_client_tx(struct rwnx_vif *vif, struct sk_buff **pskb)
  *      others, skb need free by the caller,remember not use msg->skb!
  */
 
-int intf_tx(struct rwnx_hw *priv,struct msg_buf *msg)
+int intf_tx(struct rwnx_hw *priv, struct msg_buf *msg);
+int intf_tx(struct rwnx_hw *priv, struct msg_buf *msg)
 {
 	struct rwnx_vif *rwnx_vif = msg->rwnx_vif;
 	struct rwnx_hw *rwnx_hw = rwnx_vif->rwnx_hw;

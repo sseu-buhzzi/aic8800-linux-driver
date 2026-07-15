@@ -8,6 +8,8 @@
  ******************************************************************************
  */
 
+#include <linux/compiler_attributes.h>
+
 #include "rwnx_defs.h"
 #include "rwnx_tx.h"
 #include "ipc_host.h"
@@ -151,7 +153,8 @@ static void rwnx_txq_init(struct rwnx_txq *txq, int idx, u8 status,
  * @rwnx_hw: main driver data
  * @txq: txq to flush
  */
-void rwnx_txq_flush(struct rwnx_hw *rwnx_hw, struct rwnx_txq *txq)
+static void rwnx_txq_flush(struct rwnx_hw *rwnx_hw,
+                           struct rwnx_txq *txq)
 {
     struct sk_buff *skb;
 
@@ -638,6 +641,7 @@ void rwnx_txq_vif_for_each_sta(struct rwnx_hw *rwnx_hw, struct rwnx_vif *rwnx_vi
     }
     case NL80211_IFTYPE_AP_VLAN:
         rwnx_vif = rwnx_vif->ap_vlan.master;
+        fallthrough;
     case NL80211_IFTYPE_AP:
     case NL80211_IFTYPE_MESH_POINT:
     case NL80211_IFTYPE_P2P_GO:

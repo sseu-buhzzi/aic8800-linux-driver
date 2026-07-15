@@ -13,7 +13,7 @@ let
 in
 stdenv.mkDerivation {
   pname = "aic8800-driver";
-  version = "1.1.1+38205029";
+  version = "1.1.2+38206002";
 
   src = ../../drivers/aic8800;
 

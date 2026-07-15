@@ -38,8 +38,9 @@ enum apf_attributes {
 
 #endif
 
-int aic_dev_start_mkeep_alive(struct rwnx_hw *rwnx_hw, struct rwnx_vif *rwnx_vif,
-			u8 mkeep_alive_id, u8 *ip_pkt, u16 ip_pkt_len, u8 *src_mac, u8 *dst_mac, u32 period_msec)
+static int aic_dev_start_mkeep_alive(struct rwnx_hw *rwnx_hw,
+    struct rwnx_vif *rwnx_vif, u8 mkeep_alive_id, u8 *ip_pkt,
+    u16 ip_pkt_len, u8 *src_mac, u8 *dst_mac, u32 period_msec)
 {
 	u8 *data, *pos;
 
@@ -66,7 +67,8 @@ int aic_dev_start_mkeep_alive(struct rwnx_hw *rwnx_hw, struct rwnx_vif *rwnx_vif
 	return 0;
 }
 
-int aic_dev_stop_mkeep_alive(struct rwnx_hw *rwnx_hw, struct rwnx_vif *rwnx_vif, u8 mkeep_alive_id)
+static int aic_dev_stop_mkeep_alive(struct rwnx_hw *rwnx_hw,
+    struct rwnx_vif *rwnx_vif, u8 mkeep_alive_id)
 {
 	int  res = -1;
 
@@ -1061,6 +1063,7 @@ static const struct nl80211_vendor_cmd_info aicwf_vendor_events[] = {
 };
 #endif
 
+int aicwf_vendor_init(struct wiphy *wiphy);
 int aicwf_vendor_init(struct wiphy *wiphy)
 {
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 14, 0)

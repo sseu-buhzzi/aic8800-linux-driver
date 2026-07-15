@@ -6,6 +6,7 @@
  * Copyright (C) AICSemi 2018-2020
  */
 
+#include <linux/compiler_attributes.h>
 
 #include "usb_host.h"
 //#include "ipc_compat.h"
@@ -32,7 +33,10 @@ void aicwf_usb_host_init(struct usb_host_env_tag *env,
 /**
  ****************************************************************************************
  */
-volatile struct txdesc_host *aicwf_usb_host_txdesc_get(struct usb_host_env_tag *env, const int queue_idx)
+static __maybe_unused
+volatile struct txdesc_host *
+aicwf_usb_host_txdesc_get(struct usb_host_env_tag *env,
+                          const int queue_idx)
 {
  //   struct ipc_shared_env_tag *shared_env_ptr = env->shared;
     volatile struct txdesc_host *txdesc_free = NULL;
