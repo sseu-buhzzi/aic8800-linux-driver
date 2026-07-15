@@ -1364,7 +1364,10 @@ static void rwnx_rx_add_rtap_hdr(struct rwnx_hw* rwnx_hw,
         while ((pos - (u8 *)rtap) & 1)
             pos++;
         rtap->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_HE);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wattribute-warning"
         memcpy(pos, &he, sizeof(he));
+#pragma GCC diagnostic pop
         pos += sizeof(he);
     }
 
