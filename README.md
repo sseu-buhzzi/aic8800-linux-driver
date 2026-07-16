@@ -1,6 +1,8 @@
 # UGREEN AIC8800 Wi-Fi Linux driver
 
-An example for `flake.nix`.
+## How to configure it in nixos configuration
+
+- An example for `flake.nix`.
 
 ```nix
 {
@@ -8,7 +10,8 @@ An example for `flake.nix`.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     aic8800 = {
-      url = "github:sseu-buhzzi/aic8800-linux-driver";
+      # Or another revision that matches or is close to your kernel.
+      url = "github:sseu-buhzzi/aic8800-linux-driver?ref=archive/38206003-linux-7.1.1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -32,7 +35,7 @@ An example for `flake.nix`.
 }
 ```
 
-An example for `configuration.nix`.
+- An example for `configuration.nix`.
 
 ```nix
 { ... }:
