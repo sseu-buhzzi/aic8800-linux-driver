@@ -5,4 +5,5 @@ modules.order
 *.mod.c
 *.mod
 *.o
+*.o.d
 *.ko

@@ -10,7 +10,7 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
-      linuxPkgs = pkgs.linuxPackages_7_0;
+      linuxPkgs = pkgs.linuxPackages_7_1;
     in
     {
       nixosModules.aic8800 = import ./nixosModules/aic8800/default.nix;
